@@ -52,17 +52,15 @@ temp %>%
 
 ## ------------------------- ANALYSIS -------------------------------
 ## ---------------------- Encoding phase ----------------------------
-source(paste(root_dir, "encoding/stats_enc_acc.R", sep = ""))
-stats_enc_acc(data_dir)
+# Stats
+source(paste(root_dir, "analysis/encoding/stats_enc_acc.R", sep = "/"))
+stats_enc_acc(root_dir)
 
-source(paste(root_dir, "encoding/plot_enc_acc.R", sep = ""))
+# Plots
+source(paste(root_dir, "analysis/encoding/plot_enc_acc.R", sep = "/"))
 plot_enc_acc(data_dir)
 
-# Exclude above 32
-# temp <- temp %>%
-#  subset(!(participant %in% c(243,244,245,246,247,248,249,250,251,252,253,499,447,445)))
-# write.csv(temp,paste(data_dir, "data/full_sample/full-sample_task-sdp_AB.csv", sep="/"))
-
+#
 ## ------------ Retrieval phase. Overall performance ----------------
 # Import all the retrieval scripts
 ret_root_dir <- paste(root_dir, "retrieval", sep = "")
