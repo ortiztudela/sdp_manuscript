@@ -60,7 +60,6 @@ stats_enc_acc(root_dir)
 source(paste(root_dir, "analysis/encoding/plot_enc_acc.R", sep = "/"))
 plot_enc_acc(data_dir)
 
-#
 ## ------------ Retrieval phase. Overall performance ----------------
 # Import all the retrieval scripts
 ret_root_dir <- paste(root_dir, "retrieval", sep = "")
