@@ -4,4 +4,4 @@ data/*
 # Ignore files related to specific environments or editors
 .DS_Store           # macOS folder metadata
 .vscode/            # Visual Studio Code settings
-
+*/.DS_Store
