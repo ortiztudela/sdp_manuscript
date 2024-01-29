@@ -13,7 +13,6 @@ data_curation <- function(data_dir, c_sub, age_group) {
   ## ----------------------  Set up  ----------------------------
   # Load libraries
   library(dplyr)
-  library(readxl)
 
   # Set up participant code
   sub_code <- paste("sub-", sprintf("%02d", c_sub), sep = "")

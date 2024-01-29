@@ -17,34 +17,35 @@ source(paste(root_dir, "data_preprocessing/data_curation.R", sep = "/"))
 # Loop through age groups
 for (age_group in c("young_adults", "children", "older_adults")) {
   # Read participants ids from file
-  which_subs <- read.csv(paste(data_dir, "/raw/", age_group, "/ids.txt", sep=""),
+  which_subs <- read.csv(paste0(data_dir, "/raw/", age_group, "/ids.txt"),
     sep = ",", header = FALSE
-  )
+  )$V1
 
   # Loop through participants
-  for (c_sub in which_subs$V1) {
+  for (c_sub in which_subs) {
     # Curate raw files
     data_curation(data_dir, c_sub, age_group)
   }
 
   ## ---------------------- Aggregate data (within groups) ------------
-  # source(paste(root_dir, "curation/agg_data.R", sep = ""))
-  # agg_data(data_dir, which_subs, age_group)
+  # This function aggregates data within groups and does
+  # some automatic coding of recall responses
+  source(paste(root_dir, "data_preprocessing/agg_data_group.R", sep = "/"))
+  agg_data_group(data_dir, which_subs, age_group)
 
   # Import coding. WARING! Only do this if the manual coding exists
-  # source(paste(root_dir, "curation/import_coding.R", sep = ""))
-  # import_coding(data_dir, age_group)
+  source(paste(root_dir, "data_preprocessing/import_coding.R", sep = "/"))
+  import_coding(data_dir, age_group)
 }
 
-
 ## ---------------------- Aggregate data (across groups) ------------
-source(paste(root_dir, "curation/agg_data_groups.R", sep = ""))
+source(paste(root_dir, "data_preprocessing/agg_data_sample.R", sep = "/"))
 age_group <- "full_sample"
-agg_data_groups(data_dir)
+agg_data_sample(data_dir)
 
 # Print N by group
 library(dplyr)
-temp <- read.csv(paste(data_dir, "data/full_sample/full-sample_task-sdp_beh.csv", sep = "/"), sep = ",", header = TRUE)
+temp <- read.csv(paste(data_dir, "BIDS/full_sample/full-sample_task-sdp_beh.csv", sep = "/"), sep = ",", header = TRUE)
 temp %>%
   group_by(group) %>%
   summarise(n = length(participant) / 80)
