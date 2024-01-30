@@ -10,7 +10,8 @@ root_dir <- getwd()
 # Where is the data?
 data_dir <- paste(root_dir, "../data", sep = "/")
 
-## ------------------ Curate raw data files ----------------------
+## --------------------- PREPROCESSING ---------------------------
+# ------------------ Curate raw data files ----------------------
 # Load function
 source(paste(root_dir, "data_preprocessing/data_curation.R", sep = "/"))
 
@@ -27,7 +28,7 @@ for (age_group in c("young_adults", "children", "older_adults")) {
     data_curation(data_dir, c_sub, age_group)
   }
 
-  ## ---------------------- Aggregate data (within groups) ------------
+  # ---------------------- Aggregate data (within groups) ------------
   # This function aggregates data within groups and does
   # some automatic coding of recall responses
   source(paste(root_dir, "data_preprocessing/agg_data_group.R", sep = "/"))
@@ -38,7 +39,7 @@ for (age_group in c("young_adults", "children", "older_adults")) {
   import_coding(data_dir, age_group)
 }
 
-## ---------------------- Aggregate data (across groups) ------------
+# ---------------------- Aggregate data (across groups) ------------
 source(paste(root_dir, "data_preprocessing/agg_data_sample.R", sep = "/"))
 age_group <- "full_sample"
 agg_data_sample(data_dir)
@@ -50,43 +51,69 @@ temp %>%
   group_by(group) %>%
   summarise(n = length(participant) / 80)
 
-## ------------------------- ANALYSIS -------------------------------
-## ---------------------- Encoding phase ----------------------------
+## --------------------- ANALYSIS (ANOVA) ---------------------------
+# ----------------------- Encoding phase ----------------------------
+
 # Stats
 source(paste(root_dir, "analysis/encoding/stats_enc_acc.R", sep = "/"))
 stats_enc_acc(root_dir)
 
-# Plots
+# ----------------------- Retrieval phase  --------------------------
+
+# Cue recognition
+source(paste(root_dir, "analysis/retrieval/anova/anova_cue_recog.R", sep = "/"))
+anova_cue_recog(data_dir)
+
+# Object recall
+source(paste(root_dir, "analysis/retrieval/anova/anova_object_recall.R", sep = "/"))
+anova_object_recall(data_dir)
+
+# Outcome memory
+source(paste(root_dir, "analysis/retrieval/anova/anova_outcome_memory.R", sep = "/"))
+anova_outcome_memory(data_dir)
+
+# Ending recog
+source(paste(root_dir, "analysis/retrieval/anova/anova_ending_recog.R", sep = "/"))
+anova_ending_recog(data_dir)
+
+## --------------------- ANALYSIS (LMM) -----------------------------
+# ---------------------- Retrieval phase  ---------------------------
+# Warning! This is a very slow process. It may take several hours to run.
+# Cue recognition
+source(paste(root_dir, "analysis/retrieval/lmm/lmm_cue_recog.R", sep = "/"))
+lmm_cue_recog(data_dir)
+
+# Object recall
+source(paste(root_dir, "analysis/retrieval/lmm/lmm_object_recall.R", sep = "/"))
+lmm_object_recall(data_dir)
+
+# Outcome memory
+source(paste(root_dir, "analysis/retrieval/lmm/lmm_outcome_memory.R", sep = "/"))
+lmm_outcome_memory(data_dir)
+
+# Ending recog
+source(paste(root_dir, "analysis/retrieval/lmm/lmm_ending_recog.R", sep = "/"))
+lmm_ending_recog(data_dir)
+
+## ------------------------ FIGURES --------------------------------
+# ----------------------- Encoding phase ----------------------------
+
+# Figures
 source(paste(root_dir, "analysis/encoding/plot_enc_acc.R", sep = "/"))
 plot_enc_acc(data_dir)
 
-## ------------ Retrieval phase. Overall performance ----------------
-# Import all the retrieval scripts
-ret_root_dir <- paste(root_dir, "retrieval", sep = "")
-script_files <- list.files(ret_root_dir, pattern = "\\.R$", full.names = TRUE)
-lapply(script_files, source)
+# ---------------------- Retrieval phase  ---------------------------
+# Cue recognition
+source(paste(root_dir, "visualization/cue-recog_create-plots.R", sep = "/"))
 
-# Stats
-source(paste(root_dir, "retrieval/stats_story_rec.R", sep = ""))
-stats_story_rec(data_dir)
-source(paste(root_dir, "retrieval/stats_ending_type_mem.R", sep = ""))
-stats_ending_type_mem(data_dir) # READY
-source(paste(root_dir, "retrieval/stats_cued_recall.R", sep = ""))
-stats_cued_recall(data_dir) # READY
-source(paste(root_dir, "retrieval/stats_ending_rec.R", sep = ""))
-stats_ending_rec(data_dir) # READY
+# Object recall
+source(paste(root_dir, "visualization/object-recall_create-plots.R", sep = "/"))
 
-# Plotting functions
-source(paste(root_dir, "retrieval/plots_ending_type_mem.R", sep = ""))
-plots_ending_type_mem(data_dir)
+# Outcome memory
+source(paste(root_dir, "visualization/outcome-memory_create-plots.R", sep = "/"))
 
-## ------------ Retrieval phase. By congruity ----------------
-# Stats
-source(paste(root_dir, "retrieval/mem_tasks.R", sep = ""))
-mem_tasks(data_dir)
+# Ending recog
+source(paste(root_dir, "visualization/ending-recog_create-plots.R", sep = "/"))
 
-# Plots
-source(paste(root_dir, "retrieval/plot_mem.R", sep = ""))
-plot_mem(data_dir, "all")
-source(paste(root_dir, "retrieval/plot_mem_cond.R", sep = ""))
-plot_mem_cond(data_dir, which_subs, age_group)
+# Polynomials
+source(paste(root_dir, "visualization/polynomials_create-plots.R", sep = "/"))
