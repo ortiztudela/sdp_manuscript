@@ -13,7 +13,7 @@ plot_enc_acc <- function(root_dir) {
   bids_dir <- paste(root_dir, "../data/BIDS/full_sample/", sep = "/")
 
   # Where do you want the plots?
-  fig_dir <- paste(root_dir, "../results/figures/encoding/", sep = "/")
+  fig_dir <- paste(root_dir, "../figures/encoding/", sep = "/")
 
   # Create folder if it doesn't exist
   if (!dir.exists(fig_dir)) {

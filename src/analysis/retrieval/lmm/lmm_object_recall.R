@@ -93,33 +93,7 @@ object_recall <- function(data_dir) {
   # As there is a significant decrease in fit, we keep stimuli's intercept
   # As there's nothing else to reduce, we keep red_model_1
   # We can explore this model with "Anova" (capital A)
+  Anova(red_model_1)
   summary(red_model_1)
 
-  ## ------------------------------------------------------------------
-  ## ------------------ Linear and quadratic test ---------------------
-  ## ------------------------------------------------------------------
-
-  # Define linear
-  linear_comp <- c(-1, 0, 1)
-
-  # Define quadratic
-  quadratic_comp <- c(1, -2, 1)
-
-  # Some R magic
-  contrasts(ret_data$congruency) <- cbind(linear_comp, quadratic_comp)
-
-  # refit the model
-  red_model_1_contr <- lmer(
-    central_recall_coding ~ congruency * group +
-      (1 | participant) +
-      (1 | comic_name),
-    data = ret_data
-  )
-
-  summary(red_model_1_contr)
-
-  # No clear polynomials.
-  library(emmeans)
-  emm <- emmeans(red_model_1, pairwise ~ group)
-  contrast(emm, method = "revpairwise")
 }

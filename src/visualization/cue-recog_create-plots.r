@@ -15,7 +15,7 @@ main_dir <- paste(getwd(), "../", sep = "/")
 data_dir <- paste(main_dir, "data/BIDS/full_sample/", sep = "/")
 
 # Where do you want the plots?
-fig_dir <- paste(main_dir, "results/figures/retrieval/", sep = "/")
+fig_dir <- paste(main_dir, "figures/retrieval/", sep = "/")
 
 # Create the directory if it doesn't exist
 if (!dir.exists(fig_dir)) {

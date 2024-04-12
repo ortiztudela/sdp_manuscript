@@ -12,7 +12,7 @@ library(ggpattern)
 main_dir <- paste(getwd(), "../", sep = "/")
 
 # Where do you want the plots?
-fig_dir <- paste(main_dir, "results/figures/retrieval/", sep = "/")
+fig_dir <- paste(main_dir, "figures/retrieval/", sep = "/")
 
 ## ----------------------  Get data ----------------------------
 # Create a data frame with the coefficients and their respective confidence intervals

@@ -50,25 +50,21 @@ stats_enc_acc <- function(root_dir) {
   agg_data$participant <- as.factor(agg_data$participant)
   agg_data$group <- as.factor(agg_data$group)
 
-  # Run anova
+  # Prepare data
   prepared_data <- agg_data %>%
     select(group, participant, av_acc)
-  res.aov <- anova_test(data = prepared_data, dv = av_acc, wid = participant, between = group)
-  results <- get_anova_table(res.aov)
-  print(results)
+    
+  # Between-subjects comparison using Kruskal-Wallis test
+  res_between <- kruskal_test(av_acc ~ group, data = prepared_data)
 
-  # Pair-wise comparisons
-  pwc <- prepared_data %>%
-    pairwise_t_test(
+  # Pairwise comparisons between groups using Mann-Whitney U test with Bonferroni correction
+  pwc_nonparam <- prepared_data %>%
+    pairwise_wilcox_test(
       av_acc ~ group,
-      paired = FALSE,
       p.adjust.method = "bonferroni"
     )
-  print(pwc)
 
-  # Compute t statistics for the pairwise comparisons
-  print(t.test(prepared_data$av_acc[agg_data$group == "children"], agg_data$av_acc[agg_data$group == "YA"], var.equal = TRUE))
-  print(t.test(prepared_data$av_acc[prepared_data$group == "children"], prepared_data$av_acc[prepared_data$group == "OA"], var.equal = TRUE))
-  print(t.test(prepared_data$av_acc[prepared_data$group == "YA"], prepared_data$av_acc[prepared_data$group == "OA"], var.equal = TRUE))
-
+  # Display results
+  print(res_between)
+  print(pwc_nonparam)
 }

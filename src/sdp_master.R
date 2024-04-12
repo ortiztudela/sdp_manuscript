@@ -22,6 +22,11 @@ for (age_group in c("young_adults", "children", "older_adults")) {
     sep = ",", header = FALSE
   )$V1
 
+  # Create BIDS dir if it does not exist
+  if (!dir.exists(paste(data_dir, "BIDS/", sep = "/"))) {
+    dir.create(paste(data_dir, "BIDS/", sep = "/"))
+  }
+  
   # Loop through participants
   for (c_sub in which_subs) {
     # Curate raw files
@@ -97,6 +102,10 @@ lmm_ending_recog(data_dir)
 
 ## ------------------------ FIGURES --------------------------------
 # ----------------------- Encoding phase ----------------------------
+# Create figures directory if it does not exist
+if (!dir.exists(paste(root_dir, "figures", sep = "/"))) {
+  dir.create(paste(root_dir, "figures", sep = "/"))
+}
 
 # Figures
 source(paste(root_dir, "analysis/encoding/plot_enc_acc.R", sep = "/"))

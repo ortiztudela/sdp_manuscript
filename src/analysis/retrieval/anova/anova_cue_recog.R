@@ -81,6 +81,9 @@ anova_cue_recog <- function(data_dir) {
   # Perform a Bayesian t-test on dprime against 0
   print(ttestBF(sdt_out$dprime, mu = 0))
 
+  # Compute Cohen's d
+  print(cohens_d(data = sdt_out, dprime ~ 1, mu = 0, paired = FALSE))
+
   # Perform a t-test on dprime for each group against 0
   groups <- unique(sdt_out$group)
   t_test_results <- lapply(groups, function(g) {
@@ -91,6 +94,16 @@ anova_cue_recog <- function(data_dir) {
   # Print results
   names(t_test_results) <- groups
   print(t_test_results)
+
+  # Compute Cohen's d
+  cohen_d_results <- lapply(groups, function(g) {
+    group_data <- filter(sdt_out, group == g)
+    cohens_d(data = group_data, dprime ~ 1, mu = 0, paired = FALSE)
+  })
+
+  # Print results
+  names(cohen_d_results) <- groups
+  print(cohen_d_results)
 
   ## ------------------------------------------------------------------
   ## ----------------- Cue recognition by congruency ------------------
